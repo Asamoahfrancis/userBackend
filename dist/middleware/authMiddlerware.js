@@ -16,16 +16,24 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const UserModel_1 = require("../Models/UserModel");
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const token = req.header("Authorization").replace("Bearer", " ");
+        const token = req.header("Authorization");
+        if (!token) {
+            throw new Error("Authorization header is missing");
+        }
         const decoded = jsonwebtoken_1.default.verify(token, "thisismySecrete");
-        const getUser = UserModel_1.userModal.findOne({ _id: decoded._id, token });
-        if (!getUser)
-            return new Error("could not find any user");
+        const getUser = yield UserModel_1.userModal.findOne({
+            _id: decoded._id,
+            "tokens.token": token,
+        });
+        if (!getUser) {
+            throw new Error();
+        }
+        req.token = token;
         req.getUser = getUser;
         next();
     }
     catch (error) {
-        res.status(401).send({ Error: error.message });
+        res.status(401).send({ error: "Please authenticate." });
     }
 });
 exports.default = authMiddleware;

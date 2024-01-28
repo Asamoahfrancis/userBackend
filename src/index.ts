@@ -1,6 +1,6 @@
 import express from "express";
-import UserRouter from "./Router/UserRouter/UserRouter";
-import CommentRouter from "./Router/CommentsRouter/CommentsRouter";
+import UserRouter from "./Router/UserRouter";
+import CommentRouter from "./Router/CommentsRouter";
 import { dbConnection } from "./database/dbConnect";
 import { closeDatabaseConnection } from "./database/dbConnect";
 

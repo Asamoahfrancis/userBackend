@@ -6,6 +6,7 @@ interface userType extends Document {
   password: string;
   tokens: { token: string }[];
   generateToken(): Promise<string>;
+  getPublicProfile(): Promise<any>;
 }
 
 interface modalType extends Model<userType> {
@@ -49,6 +50,8 @@ UserSchema.methods.generateToken = async function () {
     const token = jwt.sign({ _id: userData._id }, "thisismySecrete");
     userData.tokens = userData.tokens.concat({ token: token });
     await userData.save();
+
+    return token;
   } catch (error) {
     console.log({ Error: error });
   }
@@ -59,10 +62,20 @@ UserSchema.statics.getUsercredentials = async function (username, password) {
   if (!userData) throw new Error("no user data found");
 
   const isMatch = await bcrypt.compare(password, userData.password);
-  if (!isMatch) throw new Error("username or password error");
-
+  if (!isMatch) {
+    throw new Error("username or password error");
+  }
   return userData;
 };
+
+UserSchema.methods.toJSON = function () {
+  const rawUser = this;
+  const userData = rawUser.toObject();
+  delete userData.password;
+  delete userData.tokens;
+  return userData;
+};
+
 export const userModal = mongoose.model<userType>(
   "users",
   UserSchema,

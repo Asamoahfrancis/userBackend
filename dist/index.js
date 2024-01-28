@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const UserRouter_1 = __importDefault(require("./Router/UserRouter/UserRouter"));
-const CommentsRouter_1 = __importDefault(require("./Router/CommentsRouter/CommentsRouter"));
+const UserRouter_1 = __importDefault(require("./Router/UserRouter"));
+const CommentsRouter_1 = __importDefault(require("./Router/CommentsRouter"));
 const dbConnect_1 = require("./database/dbConnect");
 const dbConnect_2 = require("./database/dbConnect");
 (0, dbConnect_1.dbConnection)();

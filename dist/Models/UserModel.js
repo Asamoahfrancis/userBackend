@@ -74,6 +74,7 @@ UserSchema.methods.generateToken = function () {
             const token = jsonwebtoken_1.default.sign({ _id: userData._id }, "thisismySecrete");
             userData.tokens = userData.tokens.concat({ token: token });
             yield userData.save();
+            return token;
         }
         catch (error) {
             console.log({ Error: error });
@@ -86,10 +87,18 @@ UserSchema.statics.getUsercredentials = function (username, password) {
         if (!userData)
             throw new Error("no user data found");
         const isMatch = yield bcrypt_1.default.compare(password, userData.password);
-        if (!isMatch)
+        if (!isMatch) {
             throw new Error("username or password error");
+        }
         return userData;
     });
+};
+UserSchema.methods.toJSON = function () {
+    const rawUser = this;
+    const userData = rawUser.toObject();
+    delete userData.password;
+    delete userData.tokens;
+    return userData;
 };
 exports.userModal = mongoose_1.default.model("users", UserSchema, "users");
 //# sourceMappingURL=UserModel.js.map

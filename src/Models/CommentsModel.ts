@@ -1,7 +1,7 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
-
 interface commentType extends Document {
   comment: string;
+  owner: any;
 }
 
 interface commentModalType extends Model<commentType> {
@@ -12,12 +12,11 @@ const CommentSchema = new Schema<commentType>({
     type: String,
     required: true,
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
 });
-
-CommentSchema.statics.getComments = async function (params: any) {
-  try {
-  } catch (error) {}
-};
 
 export const CommentsModal = mongoose.model<commentType>(
   "Comments",

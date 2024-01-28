@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const UserModel_1 = require("../../Models/UserModel");
-const authMiddlerware_1 = __importDefault(require("../../middleware/authMiddlerware"));
+const UserModel_1 = require("../Models/UserModel");
+const authMiddlerware_1 = __importDefault(require("../middleware/authMiddlerware"));
 const UserRouter = express_1.default.Router();
 UserRouter.use(express_1.default.json());
 UserRouter.use((0, cors_1.default)());
