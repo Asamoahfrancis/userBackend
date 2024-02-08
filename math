@@ -1,0 +1,51 @@
+// import {
+//   CalculateTip,
+//   fahrentitToCelcius,
+//   CelcuisToFahrent,
+//   add,
+// } from "../math";
+
+// console.log(process.env.MONGODB_TEST);
+
+// test("calculate tip for the user", () => {
+//   const total = CalculateTip(10, 0.3);
+//   if (total !== 13) {
+//     throw new Error("Total tip should be 13");
+//   }
+// });
+
+// //with expect
+
+// test("calculate the test with expect", () => {
+//   const total = CalculateTip(10, 0.3);
+//   expect(total).toBe(13);
+// });
+
+// test("could calculate the total price wih the default", () => {
+//   const total = CalculateTip(10);
+//   expect(total).toBe(12.5);
+// });
+
+// test("sholud convert 32F to 0", () => {
+//   const results = fahrentitToCelcius(32);
+//   expect(results).toBe(0);
+// });
+
+// test("sholud convert 0 to 32", () => {
+//   const results = CelcuisToFahrent(0);
+//   expect(results).toBe(32);
+// });
+
+// test("Async test demo", (done) => {
+//   setTimeout(() => {
+//     expect(1).toBe(1);
+//     done();
+//   }, 2000);
+// });
+
+// test("add the two values together", async () => {
+//   const results = await add(10, 10);
+//   expect(results).toBe(20);
+// });
+
+test("hello world", () => {});

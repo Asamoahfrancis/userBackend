@@ -3,6 +3,7 @@ import { z } from "zod";
 require("dotenv").config();
 const envVariables = z.object({
   MONGODB_URI: z.string(),
+  MONGODB_TEST: z.string(),
 });
 
 envVariables.parse(process.env);
@@ -18,7 +19,7 @@ export const dbConnection = async () => {
     mongoose.connection.on("connected", () => console.log("connected"));
     mongoose.connection.on("open", () => console.log("open"));
 
-    mongoose.connect(process.env.MONGODB_URI);
+    mongoose.connect(process.env.MONGODB_TEST);
   } catch (error: any) {
     console.error(error.message);
   }

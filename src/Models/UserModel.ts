@@ -1,12 +1,14 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { CommentsModal } from "./CommentsModel";
 interface userType extends Document {
   username: string;
   password: string;
   tokens: { token: string }[];
   generateToken(): Promise<string>;
   getPublicProfile(): Promise<any>;
+  avatar: any;
 }
 
 interface modalType extends Model<userType> {
@@ -15,25 +17,33 @@ interface modalType extends Model<userType> {
     password: string
   ): Promise<userType | null>;
 }
-const UserSchema = new Schema<userType>({
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
+const UserSchema = new Schema<userType>(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: true,
     },
-  ],
-});
+    password: {
+      type: String,
+      required: true,
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    avatar: {
+      type: Buffer,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 UserSchema.pre("save", async function (next) {
   const userData = this;
@@ -43,6 +53,19 @@ UserSchema.pre("save", async function (next) {
   }
   next();
 });
+
+UserSchema.pre(
+  "deleteOne",
+  { document: true, query: false },
+  async function (next) {
+    const user = this;
+    const commentModal = await CommentsModal.deleteMany({ owner: user._id });
+    if (!commentModal) {
+      next(new Error("failed to remove the comment data"));
+    }
+    next();
+  }
+);
 
 UserSchema.methods.generateToken = async function () {
   const userData = this;

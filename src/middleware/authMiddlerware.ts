@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { userModal } from "../Models/UserModel";
+import { Document } from "mongoose";
 
 export interface CustomRequest extends Request {
   [x: string]: any;
@@ -14,12 +15,12 @@ const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.header("Authorization");
+    const token = req.header("Authorization")?.replace("Bearer", "").trim();
 
     if (!token) {
       throw new Error("Authorization header is missing");
     }
-    const decoded: any = jwt.verify(token, "thisismySecrete");
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
 
     const getUser = await userModal.findOne({
       _id: decoded._id,
